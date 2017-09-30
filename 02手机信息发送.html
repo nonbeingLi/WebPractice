@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet"  href=""/>
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;padding: 0;
+			}
+			.container{width: 266px;height: 538px;margin: 20px auto;background: url("images/phone.png");position: relative;}
+			#content{
+				width: 234px;height: 398px;position: absolute;background-color: white;top: 41px;left: 7px;padding: 10px;overflow: auto;
+			}
+			.foot{height: 40px;width: 254px;background-color: #e8e8e8;position: absolute;bottom: 39px;left: 7px;line-height: 40px;border-top: 1px solid #b0adad;}
+			.photo{
+				width:30px;height: 30px;margin: 5px;cursor: pointer;border:1px solid lightblue;border-radius: 50%;background-color: lightblue;
+			}
+			#message{
+				    height: 28px;margin-top: 4px;vertical-align: top;margin-left: -5px;width: 142px;
+			}
+			#submit{display: inline-block;width: 45px;height: 30px;border: 1px solid #acacac;border-radius: 3px;text-align: center;line-height: 30px;vertical-align: top;margin-top: 5px;font-weight: bold;color: gray;cursor: pointer;}
+			.fl{
+				float: left;
+			}
+			.fr{float: right;}
+			.infol{
+				width: 80%;
+				margin-left:40px;
+				margin-bottom:10px;
+			}
+			.infol span{
+				font-size: 12px;
+				color: gray;
+
+			}
+			.infor{
+				width: 80%;
+				margin-right:40px;
+				margin-bottom:10px;
+			}
+			.infor span{
+				font-size: 12px;
+				color: gray;
+				float: right;
+				margin-top: 3px;
+			}
+			.chatInfo{
+				display: inline-block;
+				padding: 10px;
+				background-color: #9ad339;
+				border-radius: 5px;
+				line-height: 20px;
+				word-break:break-all; word-wrap:break-word;
+				margin: 0;
+				margin-top: 5px;
+			}
+			.blue{
+				background-color: #4d9cdb;
+				float: right;
+			}
+		</style>
+		<script>
+			window.onload=function(){
+				var content=document.getElementById("content");
+				var image=document.getElementById("image");
+				var message=document.getElementById("message");
+				var submit=document.getElementById("submit");
+				//设置图片数组
+				var imgURL=['images/head01.jpg','images/head02.jpg','images/head03.jpg'];
+				var imgName=['寒烟柔','阿狸','东方'];
+				var index=0;
+				var flag=1;
+				image.onclick=function(){	//点击图片切换图片内容
+					index++;
+					if(index>imgURL.length-1) index=0;
+					image.src=imgURL[index];
+					flag=(flag+1)%2;	//更新左右标记
+				};
+				submit.onclick=function(){
+					var inner=message.value;
+					if(inner!=null&&inner.length>0){
+						if(flag==1){	//flag为1时选择人物头像在左边
+							var text='<img class="photo fl" src="'+imgURL[index]+'">'+'<div class="infol"><span class="name">'+imgName[index]+'</span><br><p class="chatInfo">'+message.value+'</p></div>';
+						}else{		//flag为0时选择人物头像在右边
+							var text='<img class="photo fr" src="'+imgURL[index]+'">'+'<div class="infor"><span class="name">'+imgName[index]+'</span><br><p class="chatInfo blue">'+message.value+'</p><br style="clear:both"></div>';
+						}
+						content.innerHTML+=text;   //添加内容
+						message.value="";			//清空输入框
+					}
+				};
+			}
+		</script>
+	</head>
+	<body>
+		<h1>点击图标切换人物头像进行聊天</h1>
+		<div class="container">
+			<div id="content">
+			</div>
+			<div class="foot">
+				<img id="image" class="photo" src="images/head01.jpg" alt="头像">
+				<input id="message" type="text" placeholder="请输入内容">
+				<a id="submit">发送</a>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="text/html; charset=utf-8">
+		<link rel="stylesheet"  href=""/>
+		<title></title>
+	</head>
+	<style>
+		.head{
+			width: 60%;margin: 20px auto;text-align: center}
+		.wrap{
+			width: 60%;
+			margin: 20px auto;
+			background-color: gray;
+			height: 500px;
+			position: relative;
+		}
+		.butt{display: block;height: 50px;width:50px;line-height: 43px;font-size: 40px;font-weight: bold;text-align: center;border: 5px solid white;color: white;text-decoration: none;opacity: 0.4;filter: alpha(opacity=40);}
+		.butt:hover{opacity: 0.9;filter: alpha(opacity=90)}
+		#pre{
+			position: absolute;top: 50%;left: 20px;margin-top: -25px;
+		}
+		#next{position: absolute;top: 50%;right: 20px;margin-top: -25px;}
+		#top{width:100%;height: 30px;background-color: black;color: white;display: block;text-align: center;position: absolute;opacity: 0.6;filter: alpha(opacity=60);}
+		#text{width:100%;height: 30px;background-color: black;color: white;display: block;text-align: center;position: absolute;bottom: 0;opacity: 0.6;filter: alpha(opacity=60);}
+		#image{width: 100%;height: 100%;}
+	</style>
+	<script type="text/javascript">
+		window.onload=function(){
+			//设置初始信息
+			var clickInfo=['图片只能到第一张或至最后一张','图片可以从最后一张到第一张循环播放']; //选择循环信息
+			var imgURL=['images/01.jpg','images/02.jpg','images/03.jpg','images/04.jpg'];	//图片路径信息
+			var imgInfo=['竞星剑','青干剑','日月剑','舍神剑'];				//图片内容信息
+			var circle=document.getElementById("circle");
+			var nocl=document.getElementById("nocl");
+			var pre=document.getElementById("pre");
+			var next=document.getElementById("next");
+			var top=document.getElementById("top");
+			var text=document.getElementById("text");
+			var image=document.getElementById("image");
+			var info=document.getElementById("info");
+			var index=1;	//初始下标设置为第一张
+			var flag=1;  //设置循环模式的开关
+			function showImg(){	//设置各区域的内容显示
+				top.innerHTML=index+1+"/"+imgURL.length;
+				text.innerHTML=imgInfo[index];
+				image.src=imgURL[index];
+				info.innerHTML=clickInfo[flag];
+			}
+			showImg();//初始化 加载图片
+			nocl.onclick=function(){
+				flag=0;
+			}
+			circle.onclick=function(){
+				flag=1;
+			}
+			pre.onclick=function(){	//前翻按钮点击事件
+				index--;
+				if(flag&&index<0){
+					index=imgURL.length-1;	//下标超出时 设置为最后一张
+				}else if(index<0){
+					index=0;
+				}
+				showImg();
+			}
+			next.onclick=function(){	//后翻按钮点击事件
+				index++;
+				if(flag&&index>imgURL.length-1){
+					 index=0; 	//下标超出时 设置为第一张
+				}else if(index>imgURL.length-1){
+					index=imgURL.length-1
+				}
+				showImg();
+			}
+		}
+	</script>
+	<body>
+		<div class="head">
+			<button id="circle">循环播放</button>
+			<button id="nocl">单次播放</button>
+			<p id="info">图片可以从最后一张到第一张循环播放</p>
+		</div>
+		<div class="wrap">
+			<a href="#" class="butt" id="pre"><</a>
+			<a href="#" class="butt" id="next">></a>
+			<span id="top">正在加载中。。。</span>
+			<span id="text">正在加载中。。。</span>
+			<img src="" alt="" id="image">
+		</div>
+	</body>
+</html>

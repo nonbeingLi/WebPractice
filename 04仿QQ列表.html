@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet"  href=""/>
+		<title></title>
+		<style>
+			ul{
+				margin: 0; padding: 0;list-style: none;
+			}
+			h1{text-indent: 30px;height:40px;line-height:40px;font-size: 20px;margin:0;background:url(images/tag01.png) lightblue no-repeat 5px 6px;}
+			.wrap{width: 300px;margin:40px auto;border: 1px solid black;}
+			#list li li{width: 300px;line-height: 40px;text-indent: 40px;border-bottom:1px solid black;}
+			#list li li:hover{background:#eeedeb; }
+			#list ul{display: none;}
+			.active{background:url(images/tag02.png) #287c97 no-repeat 3px 10px;}
+			.hover{background: #eae9e8;}
+		</style>
+		<script>
+			window.onload=function () {
+				var oUL=document.getElementById('list');
+				var aUL=oUL.getElementsByTagName('ul');
+				var aH=oUL.getElementsByTagName('h1');
+				var arrLI=[];
+				//获取内部li的对象数组
+				for(var i=0;i<aUL.length;i++){
+					var aLi=aUL[i].getElementsByTagName('li');
+					for(var j=0;j<aLi.length;j++){
+						arrLI.push(aLi[j]);
+					}
+				}
+				//设置一级菜单的点击事件
+				for(var i=0,l=aH.length;i<l;i++){
+					aH[i].index=i;aH[i].length=l;
+					aH[i].onclick=function(){
+						for(var i=0;i<this.length;i++ ){
+							if(i==this.index) continue;
+							aH[i].className='';
+							aUL[i].style.display='none';
+						}
+						if(this.className==''){
+							this.className='active';
+							aUL[this.index].style.display='block';
+						}else{
+							this.className='';
+							aUL[this.index].style.display='none';
+						}
+					};
+				}
+
+				//设置内部元素的点击事件
+				for(var i=0;i<arrLI.length;i++){
+					arrLI[i].index=i;
+					arrLI[i].onclick=function(){
+						for(var i=0;i<arrLI.length;i++){
+							arrLI[i].className='';
+						}
+						this.className='hover';
+					};
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<h2>仿QQ列表</h2>
+		<div class="wrap">
+			<ul id="list">
+				<li>
+					<h1>我的好友</h1>
+					<ul>
+						<li>黑大帅</li>
+						<li>百晓生</li>
+						<li>多面手</li>
+						<li>万能钥匙</li>
+					</ul>
+				</li>
+				<li>
+					<h1>大学同学</h1>
+					<ul>
+						<li>够速度</li>
+						<li>水电费</li>
+						<li>规划</li>
+					</ul>
+				</li>
+				<li>
+					<h1>黑名单</h1>
+					<ul>
+						<li>史蒂夫</li>
+						<li>东风风光</li>
+						<li>繁多</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>

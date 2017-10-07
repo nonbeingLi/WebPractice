@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet"  href=""/>
+		<title></title>
+		<style>
+			.wrap{
+				width: 268px;
+				background: #dee7e7;
+				margin: 10px auto;
+			}
+			ul{margin: 0;padding: 0;}
+			.top{
+				height: 37px;
+				margin:0 6px;
+				border-bottom: 1px solid #94bdd6;
+			}
+			.clear:after{content: "";display: block;clear: both;}
+			.clear{zoom=1;}
+			h1{font-size: 17px;line-height: 37px;padding-left: 15px;margin: 0;}
+			.top ul{float: right;position: relative;margin-left: 44px;margin-top: -25px;}
+			.top li{float: left;list-style: none;margin-left: -1px;width: 35px;height: 24px;border: 1px solid #94bdd6;font-size: 12px;line-height: 24px;text-align: center;color: #185273;cursor: pointer;}
+			li.active{border-bottom: 1px solid white;background: white;color: black;}
+			.list li{
+				margin: 0 6px;
+				padding:9px 0px 7px;
+				list-style: none;
+				font-size: 12px;
+				overflow: hidden;
+				border-bottom: 1px dashed white;
+				vertical-align: middle;
+				position: relative;
+				cursor: pointer;
+			}
+			.list span{width: 17px;height: 13px;background: blue;display: inline-block;text-align: center;line-height: 13px;margin-left: 9px;margin-right: 12px;}
+			.more{display:block;margin-left: 200px;padding: 8px;font-size: 12px;}
+			.list li:hover{background: white;    vertical-align: top;}
+			.list img{width: 84px;height: 64px;padding: 2px;border: 1px solid #dee7e7;    vertical-align: top;}
+			span.play{display: inline-block;width: 41px;height: 21px;background: url('images/play01.png') no-repeat;vertical-align: top;position: absolute;right: 6px;top:18px;}
+		</style>
+		<script type="text/javascript">
+			window.onload=function(){
+				var oU1=document.getElementsByTagName('ul')[0];
+				var oU2=document.getElementsByTagName('ul')[1];
+				var aL1=oU1.getElementsByTagName('li');
+				var aL2=oU2.getElementsByTagName('li');
+				var num=0;
+				var arr1=['解密关于地球与人类的一千零一夜1','解密关于地球与人一千零一夜2','解密关于地球类的一千零一夜3','解密关于地球与人类的一千零一夜','解密关于地球与4的一千零一夜','解密关于地球与人的一5零一夜','解密关于地球与人一千零一','解于地球与人类的一千零一夜','解密关于地球与人类的'];
+				var arr2=['天下事有难易乎、难者易易1','天下事有难易乎、难者易易2','天下事有难易乎、难者易易3','天下事有难易乎、难者易易4','天下事有难易乎、难者易易5','天下事有难易乎、难者易易6','天下事有难易乎、难者易易7','天下事有难易乎、难者易易8','天下事有难易乎、难者易易9'];
+				var arr3=['落霞与孤鹜齐飞秋水共长天一色1','落霞与孤鹜齐飞秋水共长天一色2','落霞与孤鹜齐飞秋水共长天一色3','落霞与孤鹜齐飞秋水共长天一色4','落霞与孤鹜齐飞秋水共长天一色5','落霞与孤鹜齐飞秋水共长天一色6','落霞与孤鹜齐飞秋水共长天一色7','落霞与孤鹜齐飞秋水共长天一色8','落霞与孤鹜齐飞秋水共长天一色9'];
+				var arr=[arr1,arr2,arr3];
+				var imgURL=["images/head01.jpg","images/head02.jpg","images/head03.jpg"]
+				function ready(index){
+					for(var i=0,l=aL1.length;i<l;i++){
+						aL1[i].className='';
+					}
+					aL1[index].className='active';
+					var text="";
+					for(var i=0,l=arr[index].length;i<l;i++){
+						text+='<li><span>'+(i+1)+'</span>'+arr[index][i]+'</li>';
+					}
+					oU2.innerHTML=text;
+				}
+				//初始化
+				ready(0);
+				look(0);
+
+				//设置头部三按钮的点击事件
+				for(var i=0,l=aL1.length;i<l;i++){
+					aL1[i].index=i;
+					aL1[i].onclick=function(){
+						ready(this.index);
+						look(this.index);
+					}
+				}
+				//遍历各li
+				function look(index){
+					for(var i=0,l=arr[index].length;i<l;i++){
+						aL2[i].index=i;
+						var pre=-1;
+						aL2[i].onmouseover=function(){
+							if(pre!=-1&&pre!=this.index){   //用消去前一个样式的方法
+								aL2[pre].innerHTML='<span>'+(pre+1)+'</span>'+arr[index][pre];
+							}
+							pre=this.index;
+							this.innerHTML='<span>'+(1+this.index)+'</span><img src="'+imgURL[index]+'"><span class="play"></span>'
+						}
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="top clear">
+				<h1>观看排行版</h1>
+				<ul>
+					<li>每日</li>
+					<li>每周</li>
+					<li>全部</li>
+				</ul>
+			</div>
+			<div class="list">
+				<ul>
+
+				</ul>
+			</div>
+			<span class="more">更多>></span>
+		</div>
+	</body>
+</html>

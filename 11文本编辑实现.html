@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet"  href=""/>
+		<title></title>
+		<style>
+			.wrap{width: 570px;margin: 20px auto;background: #f4e3c2}
+			h2{font-size: 12px;padding-left: 25px;line-height:30px;background: #6ba542;color: white;margin: 0}
+			ul{padding: 0;margin: 0;}
+			li{list-style: none;padding: 14px 25px 12px;border-bottom: 1px solid #6ba542;vertical-align: middle;position: relative;}
+			.edit{background: url('images/pen01.png') no-repeat;width:16px;height: 16px;display: inline-block;vertical-align: middle;margin-left: 10px;cursor: pointer;}
+			#save,#cancel{color: #6ba542;display: inline-block;width: 40px;height: 26px;line-height: 26px;vertical-align: middle;margin-left: 10px;cursor: pointer;text-align: center;}
+			#save:hover,#cancel:hover{
+				color: white;background:  #6ba542;
+			}
+			p{display: inline;}
+			.hide{display: none;}
+		</style>
+		<script type="text/javascript">
+			//利用隐藏和显示
+			window.onload=function(){
+				var aSP=document.getElementsByTagName('span');
+				var aLI=document.getElementsByTagName('li');
+				var aP=document.getElementsByTagName('p');
+				var text="";
+				var val="";
+				var index=0;
+				for(var i=0,l=aLI.length;i<l;i++){
+					aSP[i].index=i;
+					aSP[i].onclick=function(){	//针对每个图标的点击事件
+						index=this.index;
+						text=aP[this.index].innerHTML;
+						var aDiv=aLI[this.index].getElementsByTagName('div');
+						var aEM=aLI[this.index].getElementsByTagName('em');
+						var oIN=aLI[this.index].getElementsByTagName('input')[0];
+						aDiv[0].className='hide';
+						aDiv[1].className='';
+						oIN.value='';
+						aEM[0].onclick=function(){
+							aDiv[0].getElementsByTagName('p')[0].innerHTML=oIN.value;
+							aDiv[1].className='hide';
+							aDiv[0].className='';
+						}
+						aEM[1].onclick=function(){
+							aDiv[1].className='hide';
+							aDiv[0].className='';
+						}
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>		
+		<div class="wrap">
+			<h2>分类名称</h2>
+			<ul>
+				<li><div class="show"><p>我是测试文字1</p> <span class="edit"></span></div><div class="hide"><input type="text"> <em id="save">保存</em> <em id="cancel">取消</em></div></li>
+				<li><div class="show"><p>我是测试文字2</p> <span class="edit"></span></div><div class="hide"><input type="text"> <em id="save">保存</em> <em id="cancel">取消</em></div></li>
+			</ul>
+		</div>
+	</body>
+</html>

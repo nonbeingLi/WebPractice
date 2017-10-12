@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet"  href=""/>
+		<title></title>
+		<style>
+			.wrap{margin: 30px auto;width: 500px;}
+			h2{float: left;font-size: 17px;font-family: '宋体';    vertical-align: bottom;}
+			
+			ul{float: left;margin:10px 0;padding:0;    vertical-align: bottom;}
+			li{vertical-align: bottom;list-style: none;display: inline-block;width: 23px;height: 23px;background: url('images/start0.png');margin-left: -4px;cursor: pointer;}
+			.info{margin-left:10px ;float: left;height: 38px;border: 1px solid #dedeb5;font-size: 12px;color: #94948c; width: 234px;line-height: 38px;padding-left: 6px;background: url('images/start_info.png') no-repeat  90% 80%;position: relative;}
+			.info img{position: absolute;left: -5px;top: 14px;}
+			#text{margin: 10px;display: inline-block;color:#ef7300 }
+		</style>
+		<script>
+			window.onload=function () {
+				var level=['太差了','差评','还行','推荐','力荐'];
+				var imgURL=['images/start0.png','images/start1.png','images/start2.png'];
+				var list=document.getElementById('list');
+				var aLI=list.getElementsByTagName('li');
+				var text=document.getElementById('text');
+				var wrap=document.getElementsByClassName('wrap')[0];
+			    var info=document.getElementsByClassName('info')[0];
+			    // 清除所有星星样式
+				function clrAll(){
+					for(var j=0,l=aLI.length;j<l;j++){
+							aLI[j].style.background='url("images/start0.png")';
+					}
+					text.innerHTML='';
+				}
+				//根据不同的位置响应不同的背景图片 和文字内容
+				function change (index) {
+					info.style.visibility='hidden';
+					clrAll();
+					var img='';
+					if(index<2){
+						img=imgURL[1];
+					}else{
+						img=imgURL[2];
+					}
+					for(var j=0;j<=index;j++){
+						aLI[j].style.background='url("'+img+'")';
+					}
+					text.innerHTML=level[index];
+				}
+				//标记点击的位置
+				var index=-1;
+				//遍历各个li
+				for(var i=0,l=aLI.length;i<l;i++){
+					aLI[i].index=i;
+					aLI[i].onmouseover=function(e){
+						change(this.index);
+					}
+					aLI[i].onclick=function(){
+						index=this.index;
+						change(index);
+					}
+					aLI[i].onmouseleave=function(){
+						if(index!=-1){
+							change(index);
+						}else{
+							clrAll();
+							info.style.visibility='initial';
+						}
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div class="wrap">
+			<h2><span style="color: red">*</span>总体评价:</h2>
+			<ul id="list">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			<span id="text"></span>
+			<div class="info">
+				<img src="images/left_head.png" alt="">
+				<span>小提示：点击就能打分</span>
+			</div>
+		</div>
+	</body>
+</html>

@@ -7,3 +7,9 @@
 [0930/000625.274:WARNING:process_snapshot_win.cc(68)] ReadMemory ExceptionInformation failed
 [0930/000625.275:WARNING:crash_report_exception_handler.cc(60)] ProcessSnapshotWin::Initialize failed
 [0930/000625.275:ERROR:scoped_process_suspend.cc(38)] NtResumeProcess: 已尝试访问正在退出的过程。  (0xc000010a)
+[1006/225456.552:ERROR:process_info.cc(330)] VirtualQueryEx: 拒绝访问。 (0x5)
+[1006/225456.553:ERROR:process_info.cc(547)] ReadMemoryInfo failed
+[1006/225456.553:ERROR:process_reader_win.cc(233)] ReadMemory at 0x62527598 of 12 bytes failed: 仅完成部分的 ReadProcessMemory 或 WriteProcessMemory 请求。 (0x12B)
+[1006/225456.553:WARNING:process_snapshot_win.cc(68)] ReadMemory ExceptionInformation failed
+[1006/225456.553:WARNING:crash_report_exception_handler.cc(60)] ProcessSnapshotWin::Initialize failed
+[1006/225456.553:ERROR:scoped_process_suspend.cc(38)] NtResumeProcess: 已尝试访问正在退出的过程。  (0xc000010a)

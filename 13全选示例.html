@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet"  href=""/>
+		<title></title>
+		<style>
+			.wrap{display: flex;width: 100%;height: 600px;justify-content: center;align-items: center;font-size: 12px;}
+			.box{height: 218px;width: 312px;background: #fff;box-shadow: 0 0 2px grey;}
+			.box li{list-style: none;height: 30px;line-height: 30px;padding-left: 17px;}
+			.box ul{padding: 0;margin: 0;}
+			.box input,.control input{margin-right: 16px;}
+			.box span{float: right;width: 105px;}
+			.control{height: 34px;padding-left: 17px;line-height: 34px;border-top: 1px solid #dedede;padding-top:1px;}
+			.control #save{margin-left: 20px;}
+			.control .btn{background:url('images/btn_1.png') no-repeat 2px 3px  #fff;border:1px solid #dedede;width: 55px;text-indent: 12px;}
+			li+li{border-top:1px solid white;}
+			.control input{cursor: pointer;}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="box">
+				<form>
+				<ul id="list">
+					<li><input type="checkbox">私奔<span>两地分居</span></li>
+					<li><input type="checkbox">大多数<span>水电费</span></li>
+					<li><input type="checkbox">繁多<span>回复</span></li>
+					<li><input type="checkbox">风格<span>规划</span></li>
+					<li><input type="checkbox">维恩无<span>方法共和国</span></li>
+					<li><input type="checkbox">规范化<span>能否</span></li>
+				</ul>
+				<div class="control"><input type="checkbox" id="choseAll">全选 </input><input type="button" id="save" class="btn" name="" value="收藏"><input class="btn" style="background:url('images/btn_2.png') no-repeat 2px 5px" type="button" name="" value="添加"><input style="background:url('images/btn_3.png') no-repeat 2px 4px" class="btn" type="button" name="" value="删除"></div>
+				</form>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		window.onload=function(){
+			var choseAll=document.getElementById('choseAll');
+			var list=document.getElementById('list');
+			var aLI=document.getElementsByTagName('li');
+			var aInput=list.getElementsByTagName('input');
+			function giveCol(){   //整体颜色渲染
+				for(var i=0,l=aLI.length;i<l;i++){
+					aLI[i].index=i;
+					aInput[i].index=i;
+					if(!aInput[i].checked){  //对是否选择做判断
+						if(i%2==0){
+							aLI[i].style.background='#e3f9c9';
+						}else{
+							aLI[i].style.background='white';
+						}
+					}else{
+						aLI[i].style.background='#ececec';
+					}
+				}
+			}
+			giveCol();
+			function hoverF(){  //对鼠标移入移出事件处理 可以不用对点击事件处理 因为giveCol会对是否点击过进行判断
+				for(var i=0,l=aLI.length;i<l;i++){
+					aLI[i].index=i;
+					aLI[i].onmouseover=function(){
+						this.style.background='#ececec';
+					}
+					aLI[i].onmouseout=function(){
+						giveCol();
+					}
+				}
+			}
+			hoverF();
+			choseAll.onclick=function(){  //对全选点击事件处理
+				if(this.checked){
+					for(var i=0,l=aLI.length;i<l;i++){
+						aInput[i].checked=true;
+					}
+					giveCol();
+				}else{
+					for(var i=0,l=aLI.length;i<l;i++){
+						aInput[i].checked=false;
+					}
+					giveCol();
+				}
+			}
+		}
+	</script>
+</html>

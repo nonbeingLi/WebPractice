@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet"  href=""/>
+		<title></title>
+		<style>
+			.wrap{width: 600px;height: 50px;background: #185aa0;font-size: 20px;margin:10px auto;padding: 0 20px;}
+			.wrap li{display:inline-block;float: left;list-style: none;padding:0 24px;margin:auto 0;line-height: 40px;height: 40px;border-right: 1px solid #9191bf;margin-top: 5px;position: relative;}
+			.wrap li:hover{background: lightblue;}
+			.wrap a{color: white;text-decoration: none;}
+			.wrap li:last-child{float:right;border-right:none;}
+			.wrap li:last-child:hover{background:  #185aa0;}
+			.menu{height: 20px;background: lightblue;padding:10px 20px;position: absolute;font-size: 12px;	}
+			.menu li{display: inline-block;padding:0 10px;border-right: 1px solid black;height: 20px;line-height: 20px;}
+			.menu li:last-child{border-right:none;}
+			.menu a{text-decoration: none;color: darkblue;}
+			.m1{}
+			.clear:after{content:""; display: block; clear: both;}
+			.clear{zoom: 1;}
+			.sec_menu{height: 40px;position: absolute;left:-16px;top:52px;font-size: 12px;width: 300px;background: black;padding: 0 20px;overflow: auto;display: none;}
+			.sec_menu span{float:left;padding: 0px 10px;}
+		</style>
+		<script>
+			window.onload=function () {
+				var head=document.getElementById('head');
+				var aLI=head.getElementsByTagName('li');
+				var aDiv=head.getElementsByTagName('div');
+				var flag=0;
+				var last=0;
+				var time;
+				for(var i=0,l=aLI.length;i<l;i++){	//对各菜单遍历 设置事件
+					aLI[i].index=i;
+					aDiv[i].index=i;
+					aLI[i].onmouseover=function(){
+						aDiv[last].style.display='none';
+						aDiv[this.index].style.display='block';
+						last=this.index;
+					}
+					aLI[i].onmouseleave=function(){  //鼠标离开事件
+						flag=this.index;
+						time=setTimeout(function(){
+							aDiv[flag].style.display='none';
+						},200);
+						aDiv[flag].onmouseover=function(){ //二级菜单移入事件
+							clearTimeout(time);		//先清除菜单消失事件
+							this.style.display='block';
+						}
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<ul class="wrap " id="head">
+			<li class="clear">
+				<a href="#">首页</a>
+				<div class="sec_menu">
+					<span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span>
+				</div>
+			</li>
+			<li><a href="#">关于我们</a>
+				<div class="sec_menu">
+					<span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span>
+				</div>
+			</li>
+			<li><a href="#">作品</a>
+			<div class="sec_menu">
+					<span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span>
+				</div></li>
+			<li><a href="#">博客</a>
+			<div class="sec_menu">
+					<span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span>
+				</div></li>
+			<li><a href="#">》更多</a>
+			<div class="sec_menu">
+					<span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span><span><a href="#">关于我们</a></span>
+				</div></li>
+		</ul>
+	</body>
+</html>

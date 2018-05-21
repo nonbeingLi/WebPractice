@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="text/html; charset=utf-8">
+		<link rel="stylesheet"  href=""/>
+		<title></title>
+		<script type="text/javascript" src="./js/jquery-3.2.0.min.js"></script>
+	</head>
+	<body>
+		<div id="container" style="border: 1px solid;cursor: none;width: 480px;height: 320px;" >
+			<canvas id="canvas" width="480" height="320"></canvas>
+		</div>
+		<h1>df</h1>
+		<canvas id="canvas" width="1000" height="200" style="width: 400px;border: 1px solid;"></canvas>
+		<!-- css样式是实际占据宽高、属性设置是内容编程设置的宽高
+			canvas是画布、透明的
+			context是绘图上下文  canvas.getContext('2d')
+			填充 fill 描边 strock、清除 clear
+			save：用来保存Canvas的状态。save之后，可以调用Canvas的平移、放缩、旋转、错切、裁剪等操作。 restore：用来恢复Canvas之前保存的状态。防止save后对Canvas执行的操作对后续的绘制有影响
+		 -->
+	</body>
+	<script>
+		//全局变量
+		var backgroundForestImg=new Image();//森林背景
+		var mushroomImg=new Image();//蘑菇图
+		var feibiaoImag=new Image();//飞镖图片
+
+		// 步骤六6.1 决定放置奖品  先确定三种奖品的图片
+		var jcImg=new Image();
+		var pxImg=new Image();
+		var qwImg=new Image();
+
+
+		var ctx;//2d画布
+		var screenWidth;//画布宽度
+		var screenHeight;//画布高度
+		var speed = 2;//不变常量,从新开始的速度
+		var horizontalSpeed=2;//水平速度
+		var verticalSpeed=-2;//垂直速度
+		var fbAngle=2;//飞镖的旋转速度
+
+		//公用 定义一个游戏对象
+		function GameObject () {
+			this.x=0;
+			this.y=0;
+			this.image=null;
+		}
+		//定义蘑菇Mushroom继承游戏对象GameObject
+		function Mushroom(){};
+		Mushroom.prototype = new GameObject();
+		//定义武器Weapon继承 游戏对象GameObject
+		function Weapon(){};
+		Weapon.prototype=new GameObject;
+		Weapon.prototype.angle=0;//旋转的角度（用来改变飞镖的旋转角度）
+		//6.2定义奖品对象和数组 奖品的私有属性位置行、列
+		var prizes=new Array();
+		function Prize(){};
+		Prize.prototype=new GameObject();
+		Prize.prototype.row=0;//奖品行位置
+		Prize.prototype.col=0;//奖品列位置
+
+		//蘑菇实列
+		var mushroom=new Mushroom();
+		//定义飞镖实列
+		var weapon=new Weapon();
+
+		//6.3奖品数组初始化
+		function InitPrizes(){
+			var count=0; //奖品数目
+			//一共3行
+			for(var x=0;x<3;x++){
+				//一共9列
+				for(var y=0;y<9;y++){
+					var prize=new Prize();
+					if(x==0) prize.image=jcImg; //甲虫放第一行
+					if(x==1) prize.image=pxImg; //螃蟹放第二行
+					if(x==2) prize.image=qwImg; //青蛙放第三行
+
+					prize.row=x;
+					prize.col=y;
+					prize.x=50*prize.col+20; //x轴位置
+					prize.y=50*prize.row+10;//y轴位置
+					// 装入奖品数组
+					prizes[count++]=prize;
+				}
+			}
+		}
+
+		// 6.4绘制奖品
+		function DrawPrizes(){
+			for(var x=0;x<prizes.length;x++){
+				currentPrize=prizes[x];
+				ctx.drawImage(currentPrize.image,0,0,128,128,prizes[x].x,prizes[x].y,40,40);
+			}
+		}
+
+		//循环描绘物体
+		function gameLoop(){
+			//清除屏幕
+			ctx.clearRect(0,0,screenWidth,screenHeight);
+			ctx.save();
+
+			//绘制背景
+			ctx.drawImage(backgroundForestImg,0,0);
+			//绘制蘑菇
+			ctx.drawImage(mushroom.image,mushroom.x,mushroom.y);
+			//绘制奖品
+			DrawPrizes();
+
+			//绘制武器
+			//改变移动武器的坐标
+			weapon.x+=horizontalSpeed;
+			weapon.y+=verticalSpeed;
+			//改变翻滚角度
+			weapon.angle+=fbAngle;
+			//以当前飞镖的中心位置为基准  translate() 方法重新映射画布上的 (0,0) 位置
+			ctx.translate(weapon.x+(weapon.image.width/2),weapon.y+(weapon.image.height/2));
+			//根据当前飞镖角度轮换 rotate() 方法旋转当前的绘图
+			ctx.rotate(weapon.angle*Math.PI/180);
+			//描绘武器    坐标因为中心位置的改变而变化
+			ctx.drawImage(weapon.image,-(weapon.image.width/2),-(weapon.image.height/2));
+			ctx.restore();
+			HasWeaponHitEdge();
+			HasWeaponHitMushroom();
+		}
+		// 武器的边界处理
+		function HasWeaponHitEdge(){
+			//武器碰到左边边界
+			if(weapon.x<-10){
+				if(horizontalSpeed<0){	//如果武器向左走
+					horizontalSpeed=-horizontalSpeed; //改变武器方向
+				}
+			}
+			// 武器碰到右边边界
+			if(weapon.x>screenWidth-weapon.image.width){
+				if(horizontalSpeed>0){	//如果武器向右走
+					horizontalSpeed=-horizontalSpeed; //改变武器方向
+				}
+			}
+			//武器碰到上边边界
+			if(weapon.y<0){
+				if(verticalSpeed<0){
+					verticalSpeed=-verticalSpeed;
+				}
+			}
+			// 武器碰到下边边界
+			if(weapon.y>screenHeight-weapon.image.height){
+				//游戏结束 2秒后重启
+				setTimeout(function(){
+					horizontalSpeed=speed;
+					verticalSpeed=-speed;
+					weapon.x=parseInt(screenWidth/2);
+					weapon.y=parseInt(screenHeight/2);
+					gameLoop();
+				},2000);
+			}
+		}
+
+		//判断物体是否碰撞 overlap:可叠加区域值
+		function CheckIntersect(object1,object2,overlap){
+			var A1=object1.x+overlap;
+			var B1=object1.x+object1.image.width-overlap;
+			var C1=object1.y+overlap;
+			var D1=object1.y+object1.image.height-overlap;
+
+			var A2=object2.x+overlap;
+			var B2=object2.x+object2.image.width-overlap;
+			var C2=object2.y+overlap;
+			var D2=object2.y+object2.image.height-overlap;
+
+			//假如在x轴重叠
+			if(A1>A2&&A1<B2||B1>A2&&B1<B2){
+				//判断y轴是否重叠
+				if(C1>C2&&C1<D2||D1>C2&&D1<D2){
+					//碰撞
+					return true;
+				}
+			}
+			return false;
+		}
+
+		//武器碰撞挡板
+		function HasWeaponHitMushroom(){
+			//假如碰撞   将挡板分为四个部分
+			if(CheckIntersect(weapon,mushroom,5)){
+				// 假如碰撞的位置在蘑菇的最左
+				if ((weapon.x+weapon.image.width/2)<(mushroom.x+mushroom.image.width*0.25)) {
+					horizontalSpeed=-speed;//反弹
+				}
+				//假如位置在偏左
+				else if((weapon.x+weapon.image.width/2)<(mushroom.x+mushroom.image.width*0.5)){
+					//反弹速度减半
+					horizontalSpeed=-speed/2;
+				}
+				//假如位置在偏右
+				else if((weapon.x+weapon.image.width/2)<(mushroom.x+mushroom.image.width*0.75)){
+					//反弹速度减半
+					horizontalSpeed=speed/2;
+				}
+				//假如位置在最右
+				else {
+					horizontalSpeed=speed;
+				}
+				verticalSpeed=-speed;//改变垂直速度
+			}
+		}
+
+		//加载图片
+		function loadImages(){
+			mushroomImg.src="images/head01.jpg";
+			backgroundForestImg.src="images/flour04.jpg";
+			feibiaoImag.src="images/feibiao.png";
+
+			jcImg.src="images/animal/22xiaodongwu_03.png";
+			pxImg.src="images/animal/22xiaodongwu_12.png";
+			qwImg.src="images/animal/22xiaodongwu_14.png";
+
+			mushroom.image=mushroomImg;
+			weapon.image=feibiaoImag;
+
+		}
+		// 事件处理
+		function AddEventHandlers(){
+			// 鼠标移动则蘑菇跟着移动
+			$("#container").mousemove(function(e){
+				mushroom.x=e.pageX-(mushroom.image.width/2);
+			});
+		}
+		//初始化
+		$(window).ready(function(){
+			//添加事件
+			AddEventHandlers();
+			loadImages();
+			//变量赋值
+			ctx=document.getElementById('canvas').getContext('2d');
+			screenWidth=parseInt($('#canvas').attr("width"));
+			screenHeight=parseInt($('#canvas').attr("height"));
+			//初始化蘑菇
+			mushroom.x=parseInt(screenWidth/2);
+			mushroom.y=screenHeight-40;
+			//初始化飞镖
+			weapon.x=parseInt(screenWidth/2);
+			weapon.y=parseInt(screenHeight/2);
+			//初始化奖品
+			InitPrizes();
+			setInterval(gameLoop,10);
+		});
+	</script>
+</html>
